@@ -1,20 +1,19 @@
 function solution(number, k) {
   var answer = "";
-  let numbers = number.split(""); //내림차순 정렬
-  let findNumber = numbers.length - k;
-
-  while (findNumber < numbers.length && findNumber > 0) {
-    // const maxLimit = k < k-answer.length ? k+1: k-answer.length+1;
-    //선택 가능한 것중 최대
-    const current = numbers.slice(0, numbers.length - findNumber + 1);
-    const max = Math.max(...current);
-    const maxIndex = numbers.indexOf(max + "");
-    numbers = numbers.slice(maxIndex + 1);
-    answer += max;
-    findNumber--;
+  let stack = [];
+  for (let index in number) {
+    // console.log(index)
+    while (
+      stack.length > 0 &&
+      stack[stack.length - 1] < number[index] &&
+      k > 0
+    ) {
+      stack.pop();
+      k--;
+    }
+    stack.push(number[index]);
   }
-  if (findNumber) {
-    answer += numbers.join("");
-  }
-  return answer;
+  //뒤가 작아서 뒤에서 뺴야하는 경우
+  stack = stack.slice(0, stack.length - k);
+  return stack.join("");
 }
